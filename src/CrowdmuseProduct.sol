@@ -10,6 +10,10 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC721A} from "erc721a/contracts/ERC721A.sol";
 
+/**
+ * @title CrowdmuseProduct
+ * @dev This contract manages the creation and sale of unique NFTs and handles the distribution of profits.
+ */
 contract CrowdmuseProduct is ERC721A, ERC2981, ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
 
@@ -23,15 +27,30 @@ contract CrowdmuseProduct is ERC721A, ERC2981, ReentrancyGuard, Ownable {
     uint256 public contributorPointsAllocated; // used to ensure that the maximum supply of tokens is not exceeded
     uint256 public contributorPointsComplete; // used to distribute profits
     uint256 public garmentsAvailable; // remaining NFTs
-    IERC20 public paymentToken; // ERC20 token address used for payment
+    /**
+     * @dev ERC20 token used for payment.
+     */
+    IERC20 public paymentToken;
+    /**
+     * @dev Base URI for the NFT metadata.
+     */
     string public baseURI;
+    /**
+     * @dev Address of the contract's admin.
+     */
     address public admin;
 
+    /**
+     * @dev Enum for the status of the product.
+     */
     enum ProductStatus {
         InProgress,
         Complete
     }
 
+    /**
+     * @dev Enum for the types of NFTs.
+     */
     enum NFTTypes {
         Default,
         Product,
@@ -39,12 +58,18 @@ contract CrowdmuseProduct is ERC721A, ERC2981, ReentrancyGuard, Ownable {
         Investor
     }
 
+    /**
+     * @dev Enum for the status of a task.
+     */
     enum TaskStatus {
         Open,
         Assigned,
         Complete
     }
 
+    /**
+     * @dev Struct for storing information about a task.
+     */
     struct TaskInformation {
         uint256 taskId;
         uint256 contributionValue;
@@ -58,6 +83,9 @@ contract CrowdmuseProduct is ERC721A, ERC2981, ReentrancyGuard, Ownable {
         uint256 taskType;
     }
 
+    /**
+     * @dev Struct for storing information about a task.
+     */
     struct Task {
         uint256[] contributionValues;
         address[] taskContributors;
@@ -65,6 +93,9 @@ contract CrowdmuseProduct is ERC721A, ERC2981, ReentrancyGuard, Ownable {
         uint256[] taskContributorTypes;
     }
 
+    /**
+     * @dev Struct for storing information about a task.
+     */
     struct Inventory {
         string keyName;
         uint96 garmentsRemaining;
